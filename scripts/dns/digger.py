@@ -1,16 +1,23 @@
 import pydig
 import sys
 import tqdm
+import requests
 
 def scan(domain):
 	try:
+		try:
+			requests.get('http://' + domain, timeout=5)
+			http = 'HTTP\t'
+		except:
+			http = '    \t'
+
 		cnames = pydig.query(domain, 'CNAME')
 		if len(cnames) > 0:
-			print('CNAME\t%s\t->\t%r' % (domain, cnames))
+			print('CNAME\t%s%s\t->\t%r' % (http, domain, cnames))
 
 		addr = pydig.query(domain, 'A')
 		if len(addr) > 0 and all(x not in cnames for x in addr):
-			print('A\t%s\t->\t%r' % (domain, addr))
+			print('A\t%s%s\t->\t%r' % (http, domain, addr))
 	except Exception as ex:
 		if isinstance(ex, KeyboardInterrupt):
 			raise ex
