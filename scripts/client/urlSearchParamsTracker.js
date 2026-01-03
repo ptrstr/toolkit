@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         URLSearchParams tracker
 // @description  tracks URLSearchParams usage
-// @version      2025-12-11
+// @version      2025-12-12
 // @author       ptrstr
 // @include      *
 // @grant        none
@@ -25,7 +25,7 @@
     };
 
     const origHas = URLSearchParams.prototype.has;
-    URLSearchParams.prototype.get = function (key) {
+    URLSearchParams.prototype.has = function (key) {
         const error = new Error();
         console.log(`URLSearchParams.has('${key}')`, error);
         return origHas.call(this, key);
